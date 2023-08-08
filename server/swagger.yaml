@@ -1,0 +1,39 @@
+openapi: "3.0.0"
+info:
+  title: e-commerce-store docs
+  description: get to know all the routes for the e-commerce store
+  version: 1.0.0
+  contact:
+    email: mayank.buade@gmail.com
+
+servers:
+  - url: "{protocol}://localhost:4000/api/{version}"
+    description: for localhost - secure
+    variables:
+      version:
+        enum:
+          - v1
+        default: v1
+      protocol:
+        enum:
+          - http
+        default: http
+
+paths:
+  /:
+    get:
+      tags:
+        - String
+      summary: return a greet  message from the store
+      responses:
+        200:
+          description: all good success
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "mystring"
+        400:
+          description: bad request
+        500:
+          description: internal server error
