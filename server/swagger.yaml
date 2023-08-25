@@ -1,14 +1,14 @@
 openapi: "3.0.0"
 info:
   title: e-commerce-store docs
-  description: get to know all the routes for the e-commerce store
+  description: Get to know all the routes for the e-commerce store
   version: 1.0.0
   contact:
     email: mayank.buade@gmail.com
 
 servers:
   - url: "{protocol}://localhost:4000/api/{version}"
-    description: for localhost - secure
+    description: For localhost - secure
     variables:
       version:
         enum:
@@ -19,21 +19,755 @@ servers:
           - http
         default: http
 
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  
+  schemas:
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+          description: User's name
+          maxLength: 40
+        email:
+          type: string
+          description: User's email address
+        password:
+          type: string
+          description: User's password (not returned in responses)
+        role:
+          type: string
+          description: User's role (default: user)
+        photo:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Photo ID
+            secure_url:
+              type: string
+              description: Secure URL of the user's photo
+        forgotPasswordToken:
+          type: string
+          description: Token for password reset
+        forgotPasswordExpiry:
+          type: string
+          format: date-time
+          description: Expiry date for the password reset token
+        createdAt:
+          type: string
+          format: date-time
+          description: Date of user creation
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          default: false
+        error:
+          type: string
+          description: Error message
+
+security:
+  - bearerAuth: []
+
 paths:
-  /:
-    get:
+  /signup:
+    post:
       tags:
-        - String
-      summary: return a greet  message from the store
+        - user
+      summary: User Signup
+      description: Register a new user account
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                photo:
+                  type: string
+                  format: binary
+            example:
+              name: John Doe
+              email: johndoe@example.com
+              password: StrongP@ssw0rd
+              photo: (file data here)
       responses:
-        200:
-          description: all good success
+        "200":
+          description: User successfully registered
           content:
             application/json:
               schema:
-                type: string
-                example: "mystring"
-        400:
-          description: bad request
-        500:
-          description: internal server error
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  token:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+                      photo:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          secure_url:
+                            type: string
+                example:
+                  success: true
+                  token: "your_jwt_token_here"
+                  user:
+                    _id: "user_id_here"
+                    name: John Doe
+                    email: johndoe@example.com
+                    role: user
+                    photo:
+                      id: "photo_id_here"
+                      secure_url: "photo_secure_url_here"
+        "400":
+          description: Bad Request (Validation or other error)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: false
+                  error:
+                    type: string
+                example:
+                  success: false
+                  error: Error message here
+
+  /login:
+    post:
+      tags:
+        - user
+      summary: User Login
+      description: Authenticate a user and generate a JWT token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+            example:
+              email: johndoe@example.com
+              password: StrongP@ssw0rd
+      responses:
+        "200":
+          description: User successfully logged in
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  token:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+                      photo:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          secure_url:
+                            type: string
+                example:
+                  success: true
+                  token: "your_jwt_token_here"
+                  user:
+                    _id: "user_id_here"
+                    name: John Doe
+                    email: johndoe@example.com
+                    role: user
+                    photo:
+                      id: "photo_id_here"
+                      secure_url: "photo_secure_url_here"
+        "400":
+          description: Bad Request (Validation or other error)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: false
+                  error:
+                    type: string
+                example:
+                  success: false
+                  error: Error message here
+
+  /logout:
+    get:
+      tags:
+        - user
+      summary: User Logout
+      description: Log out the user and clear their authentication token
+      responses:
+        "200":
+          description: User successfully logged out
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  message:
+                    type: string
+                example:
+                  success: true
+                  message: "Logged out successfully"
+
+  /forgotpassword:
+    post:
+      tags:
+        - user
+      summary: Request Password Reset
+      description: Send a password reset email to the user's registered email address
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+            example:
+              email: johndoe@example.com
+      responses:
+        "200":
+          description: Password reset email sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  message:
+                    type: string
+                example:
+                  success: true
+                  message: "Password reset email sent successfully"
+        "400":
+          description: Bad Request (Validation or other error)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: false
+                  error:
+                    type: string
+                example:
+                  success: false
+                  error: Error message here
+
+  "/password/reset/{token}":
+    post:
+      tags:
+        - user
+      summary: Reset Password
+      description: Reset user's password using a reset token
+      parameters:
+        - name: token
+          in: path
+          required: true
+          description: Reset token received via email
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                confirmPassword:
+                  type: string
+            example:
+              password: NewP@ssw0rd
+              confirmPassword: NewP@ssw0rd
+      responses:
+        "200":
+          description: Password successfully reset
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  message:
+                    type: string
+                example:
+                  success: true
+                  message: "Password successfully reset"
+        "400":
+          description: Bad Request (Validation or other error)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: false
+                  error:
+                    type: string
+                example:
+                  success: false
+                  error: Error message here
+
+  /userdashboard:
+    get:
+      tags:
+        - user
+        - loggedIn
+      summary: Get Logged-In User Details
+      description: Get details of the currently logged-in user
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Success (User details retrieved)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  user:
+                    $ref: "#/components/schemas/User"
+                example:
+                  success: true
+                  user:
+                    _id: "user_id_here"
+                    name: John Doe
+                    email: johndoe@example.com
+                    role: user
+                    photo:
+                      id: "photo_id_here"
+                      secure_url: "photo_secure_url_here"
+        "401":
+          description: Unauthorized (User is not authenticated)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: false
+                  error:
+                    type: string
+                example:
+                  success: false
+                  error: "Login first to access this page"
+
+  /password/update:
+    post:
+      tags:
+        - user
+        - loggedIn
+      summary: Change User Password
+      description: Change the password of the currently logged-in user
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                oldPassword:
+                  type: string
+                  description: Current password
+                password:
+                  type: string
+                  description: New password
+            example:
+              oldPassword: CurrentP@ssw0rd
+              password: NewP@ssw0rd
+      responses:
+        "200":
+          description: Password successfully changed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  user:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+                      photo:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          secure_url:
+                            type: string
+                example:
+                  success: true
+                  user:
+                    _id: "user_id_here"
+                    name: John Doe
+                    email: johndoe@example.com
+                    role: user
+                    photo:
+                      id: "photo_id_here"
+                      secure_url: "photo_secure_url_here"
+        "400":
+          $ref: "#/components/schemas/Error"
+
+  /userdashboard/update:
+    post:
+      tags:
+        - user
+        - loggedIn
+      summary: Update User Details
+      description: Update the details of the currently logged-in user
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                photo:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: User details updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+        "400":
+          description: Bad Request (Validation or other error)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"  # Reference to Error schema
+
+  /admin/users:
+    get:
+      tags:
+        - admin
+      summary: Get All Users (Admin)
+      description: Get a list of all users (admin-only access)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: Bearer token (JWT)
+      responses:
+        "200":
+          description: Success (List of all users)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  users:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/User"  # Reference to User schema
+      "401":
+        description: Unauthorized (User is not authenticated)
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"  # Reference to Error schema
+      "403":
+        description: Forbidden (User does not have admin role or not authenticated)
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"  # Reference to Error schema
+
+  /admin/user/{id}:
+    get:
+      tags:
+        - admin
+      summary: Get User by ID (Admin)
+      description: Get user details by their ID (Admin access required)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the user to retrieve
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success (User details retrieved)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  user:
+                    $ref: "#/components/schemas/User" # Reference to User schema
+              example:
+                success: true
+                user:
+                  _id: "user_id_here"
+                  name: John Doe
+                  email: johndoe@example.com
+                  role: user
+                  photo:
+                    id: "photo_id_here"
+                    secure_url: "photo_secure_url_here"
+      "400":
+        description: Bad Request (User not found)
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  default: false
+                error:
+                  type: string
+            example:
+              success: false
+              error: No user found
+      "403":
+        description: Forbidden (Insufficient privileges)
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  default: false
+                error:
+                  type: string
+            example:
+              success: false
+              error: You are not allowed to access this resource
+
+    put:
+      tags:
+        - admin
+      summary: Update User by ID (Admin)
+      description: Update user details by their ID (Admin access required)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the user to update
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                role:
+                  type: string
+            example:
+              name: New Name
+              email: newemail@example.com
+              role: admin
+      responses:
+        "200":
+          description: Success (User details updated)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+              example:
+                success: true
+        "400":
+          description: Bad Request (Validation or other error)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: false
+                  error:
+                    type: string
+              example:
+                success: false
+                error: Email, Role and Name must be there
+        "403":
+          description: Forbidden (Insufficient privileges)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: false
+                  error:
+                    type: string
+              example:
+                success: false
+                error: You are not allowed to access this resource
+
+    delete:
+      tags:
+        - admin
+      summary: Delete User by ID (Admin)
+      description: Delete user by their ID (Admin access required)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the user to delete
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success (User deleted)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+              example:
+                success: true
+        "400":
+          description: Bad Request (User not found)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: false
+                  error:
+                    type: string
+              example:
+                success: false
+                error: No user found
+        "403":
+          description: Forbidden (Insufficient privileges)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: false
+                  error:
+                    type: string
+              example:
+                success: false
+                error: You are not allowed to access this resource

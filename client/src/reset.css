@@ -1,0 +1,157 @@
+/* Reset all margins, paddings, and borders to be consistent */
+html,
+body,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+ul,
+ol,
+li,
+dl,
+dt,
+dd,
+figure,
+hr,
+pre,
+table,
+fieldset,
+input,
+textarea,
+legend {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* Set box sizing to border-box for consistent sizing calculations */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove list styles */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Remove default focus outline */
+a,
+button,
+input,
+select,
+textarea {
+  outline: none;
+}
+
+/* Remove text decoration from links */
+a {
+  text-decoration: none;
+}
+
+/* Reset font styles to be consistent */
+body,
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+/* Remove user agent styles for form elements */
+button,
+input,
+select,
+textarea {
+  margin: 0;
+}
+
+/* Remove additional margin and padding in some browsers */
+button,
+input {
+  overflow: visible;
+}
+
+/* Correct the cursor style for clickable elements */
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+/* Prevent text input from expanding beyond its box */
+textarea {
+  resize: vertical;
+}
+
+/* Reset anchor color */
+a {
+  color: inherit;
+}
+
+/* Set default display for HTML5 elements */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
+summary {
+  display: block;
+}
+
+/* Remove default styling for audio and video elements */
+audio,
+canvas,
+video {
+  display: inline-block;
+  max-width: 100%;
+}
+
+/* Normalize vertical alignment for images */
+img {
+  vertical-align: middle;
+}
+
+/* Ensure SVGs are scalable */
+svg {
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+/* Remove the default border, padding, and margin for the hr element */
+hr {
+  border: 0;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+}
+
+/* Reset blockquote styling */
+blockquote {
+  quotes: none;
+}
+
+/* Reset table border spacing */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+}
