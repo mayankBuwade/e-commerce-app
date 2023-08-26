@@ -1,4 +1,4 @@
-export const users = [
+export let users = [
   {
     photo: {
       id: "users/lt28ulbcqjofgvnu9dpa",
