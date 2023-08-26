@@ -9,7 +9,6 @@ const Users = () => {
   const [modalProp, setModalProp] = useState({ isOpen: false, user: {} });
 
   const handleClick = () => {
-    console.log(searchQ);
     const searchedData = users.filter((user) => {
       for (const key in user) {
         if (typeof user[key] === "string" && user[key].search(searchQ) !== -1) {
@@ -17,7 +16,6 @@ const Users = () => {
         }
       }
     });
-    console.log(searchedData);
     setFilteredData(searchedData);
   };
 
@@ -36,7 +34,7 @@ const Users = () => {
           value={searchQ}
           onChange={(e) => setSearchQ(e.target.value)}
         />
-        <button className="absolute right-8 top-2" onClick={handleClick}>
+        <button className="absolute right-8 top-2 z-0" onClick={handleClick}>
           <span className="material-symbols-outlined">search</span>
         </button>
       </div>

@@ -31,7 +31,7 @@ const RootLayout = () => {
             <button className="ml-auto mt-3">
               <span className="material-symbols-outlined ml-auto">person</span>
             </button>
-            <div className="hidden group-hover:flex hover:flex w-[200px] flex-col bg-white drop-shadow-lg hover:z-50 relative top-2 text-black p-2 rounded-md">
+            <div className="hidden group-hover:flex hover:flex w-[200px] flex-col bg-white drop-shadow-lg z-50 relative top-2 text-black p-2 rounded-md">
               <a className="px-5 py-3 hover:bg-gray-200" href="#">
                 Profile
               </a>
