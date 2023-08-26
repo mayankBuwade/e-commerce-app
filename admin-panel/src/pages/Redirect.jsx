@@ -3,7 +3,8 @@ import { Navigate } from "react-router-dom";
 
 export const Redirect = () => {
   const user = useSelector((state) => {
-    return state.user.token;
+    console.log(state);
+    return state.token;
   });
 
   if (user) {

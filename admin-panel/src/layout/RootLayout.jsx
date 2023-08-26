@@ -5,7 +5,9 @@ import { clearUser } from "../redux/slices/userDataSlice";
 
 const RootLayout = () => {
   const [toggleMenu, setToggleMenu] = useState("hidden");
-  const user = useSelector((state) => state.user.token);
+  const user = useSelector((state) => {
+    return state.user.token;
+  });
   const dispatch = useDispatch();
 
   const handleMenuToggler = () => {
@@ -44,7 +46,7 @@ const RootLayout = () => {
           </div>
         </div>
       </header>
-      <div className="bg-slate-500 w-full min-h-[calc(100vh-56px)] flex">
+      <div className="500 w-full min-h-[calc(100vh-56px)] flex overflow-hidden">
         <div
           className={`${toggleMenu} w-44  bg-slate-900 text-white lg:block lg:w-64`}
         >
@@ -79,7 +81,7 @@ const RootLayout = () => {
             </NavLink>
           </nav>
         </div>
-        {user ? <Outlet /> : <Navigate to="/login" replace={true} />}
+        {!user ? <Navigate to="/login" replace={true} /> : <Outlet />}
       </div>
     </Fragment>
   );
