@@ -1,25 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Table from "../components/users/Table";
 import { users } from "../fakeData";
+import Modal from "../components/users/Modal";
 
 const Users = () => {
   const [searchQ, setSearchQ] = useState("");
   const [filteredData, setFilteredData] = useState(users);
+  const [modalProp, setModalProp] = useState({ isOpen: false, user: {} });
 
   const handleClick = () => {
+    console.log(searchQ);
     const searchedData = users.filter((user) => {
       for (const key in user) {
-        if (user.hasOwnProperty(key)) {
-          if (typeof user[key] === "string" && searchQ in user[key]) {
-            console.log(user);
-            return user;
-          }
+        if (typeof user[key] === "string" && user[key].search(searchQ) !== -1) {
+          return user;
         }
       }
-      console.log(searchedData);
     });
+    console.log(searchedData);
     setFilteredData(searchedData);
   };
+
+  useEffect(() => {
+    if (searchQ === "") {
+      setFilteredData(users);
+    }
+  }, [searchQ]);
 
   return (
     <div className="flex flex-col w-full items-center">
@@ -34,7 +40,8 @@ const Users = () => {
           <span className="material-symbols-outlined">search</span>
         </button>
       </div>
-      <Table users={filteredData} />
+      <Table users={filteredData} setModalProp={setModalProp} />
+      <Modal modalProp={modalProp} setModalProp={setModalProp} />
     </div>
   );
 };

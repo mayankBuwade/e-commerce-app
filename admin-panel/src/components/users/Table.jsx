@@ -1,6 +1,6 @@
 import dateFormatter from "../../utils/dateFormatter";
 
-const Table = ({ users }) => {
+const Table = ({ users, setModalProp }) => {
   return (
     <div className="w-full items-center overflow-x-auto px-5 md: flex md:justify-center">
       <table className="table-auto lg:min-w-full min-w-[800px]">
@@ -23,7 +23,7 @@ const Table = ({ users }) => {
               <td>{user.role}</td>
               <td>{dateFormatter(user.createdAt)}</td>
               <td className="flex justify-around items-center ">
-                <button>
+                <button onClick={() => setModalProp({ isOpen: true, user })}>
                   <span className="material-symbols-outlined py-2">
                     visibility
                   </span>
