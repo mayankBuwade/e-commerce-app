@@ -1,5 +1,5 @@
 const AlertDeleteModal = ({ modalProps, setModalProps }) => {
-  const { isOpen, handleYes, id } = modalProps;
+  const { isOpen, handleYes, id, title } = modalProps;
   const handleClose = () => {
     setModalProps({ ...modalProps, isOpen: false, id: "" });
   };
@@ -20,7 +20,7 @@ const AlertDeleteModal = ({ modalProps, setModalProps }) => {
       <h1 className="pl-10 font-semibold text-3xl">Delete Confirmation </h1>
       <hr className="h-[2px] w-full bg-gray-300 my-2" />
       <p className="pl-10 my-5 text-lg bg-red-200 w-[90%] mx-auto py-5 rounded">
-        Are you sure you want to delete the user with id '
+        Are you sure you want to delete the ${title} with id '
         <span className="text-red-800">{id}</span>'
       </p>
       <div className="w-[90%] mx-auto flex flex-row-reverse">
