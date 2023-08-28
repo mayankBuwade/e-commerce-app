@@ -1,11 +1,10 @@
-openapi: "3.0.0"
+openapi: 3.0.0
 info:
   title: e-commerce-store docs
   description: Get to know all the routes for the e-commerce store
   version: 1.0.0
   contact:
     email: mayank.buade@gmail.com
-
 servers:
   - url: "{protocol}://localhost:4000/api/{version}"
     description: For localhost - secure
@@ -18,14 +17,12 @@ servers:
         enum:
           - http
         default: http
-
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-  
   schemas:
     User:
       type: object
@@ -42,7 +39,7 @@ components:
           description: User's password (not returned in responses)
         role:
           type: string
-          description: User's role (default: user)
+          description: "User's role (default:- user)"
         photo:
           type: object
           properties:
@@ -72,10 +69,84 @@ components:
         error:
           type: string
           description: Error message
+    Product:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+        description:
+          type: string
+        photos:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: Photo ID
+              secure_url:
+                type: string
+                description: Secure URL of the product's photo
+        category:
+          type: string
+        manufacturerName:
+          type: string
+        ratings:
+          type: number
+        numberOfReviews:
+          type: number
+        reviews:
+          type: array
+          items:
+            type: object
+            properties:
+              user:
+                type: string
+              name:
+                type: string
+              rating:
+                type: number
+              comment:
+                type: string
+        user:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        stock:
+          type: number
 
+    ProductUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 120
+        price:
+          type: number
+        description:
+          type: string
+        photos:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              secure_url:
+                type: string
+        category:
+          type: string
+        manufacturerName:
+          type: string
+        stock:
+          type: number
 security:
   - bearerAuth: []
-
 paths:
   /signup:
     post:
@@ -137,15 +208,15 @@ paths:
                             type: string
                 example:
                   success: true
-                  token: "your_jwt_token_here"
+                  token: your_jwt_token_here
                   user:
-                    _id: "user_id_here"
+                    _id: user_id_here
                     name: John Doe
                     email: johndoe@example.com
                     role: user
                     photo:
-                      id: "photo_id_here"
-                      secure_url: "photo_secure_url_here"
+                      id: photo_id_here
+                      secure_url: photo_secure_url_here
         "400":
           description: Bad Request (Validation or other error)
           content:
@@ -161,7 +232,6 @@ paths:
                 example:
                   success: false
                   error: Error message here
-
   /login:
     post:
       tags:
@@ -215,15 +285,15 @@ paths:
                             type: string
                 example:
                   success: true
-                  token: "your_jwt_token_here"
+                  token: your_jwt_token_here
                   user:
-                    _id: "user_id_here"
+                    _id: user_id_here
                     name: John Doe
                     email: johndoe@example.com
                     role: user
                     photo:
-                      id: "photo_id_here"
-                      secure_url: "photo_secure_url_here"
+                      id: photo_id_here
+                      secure_url: photo_secure_url_here
         "400":
           description: Bad Request (Validation or other error)
           content:
@@ -239,7 +309,6 @@ paths:
                 example:
                   success: false
                   error: Error message here
-
   /logout:
     get:
       tags:
@@ -261,8 +330,7 @@ paths:
                     type: string
                 example:
                   success: true
-                  message: "Logged out successfully"
-
+                  message: Logged out successfully
   /forgotpassword:
     post:
       tags:
@@ -295,7 +363,7 @@ paths:
                     type: string
                 example:
                   success: true
-                  message: "Password reset email sent successfully"
+                  message: Password reset email sent successfully
         "400":
           description: Bad Request (Validation or other error)
           content:
@@ -311,7 +379,6 @@ paths:
                 example:
                   success: false
                   error: Error message here
-
   "/password/reset/{token}":
     post:
       tags:
@@ -354,7 +421,7 @@ paths:
                     type: string
                 example:
                   success: true
-                  message: "Password successfully reset"
+                  message: Password successfully reset
         "400":
           description: Bad Request (Validation or other error)
           content:
@@ -370,7 +437,6 @@ paths:
                 example:
                   success: false
                   error: Error message here
-
   /userdashboard:
     get:
       tags:
@@ -396,13 +462,13 @@ paths:
                 example:
                   success: true
                   user:
-                    _id: "user_id_here"
+                    _id: user_id_here
                     name: John Doe
                     email: johndoe@example.com
                     role: user
                     photo:
-                      id: "photo_id_here"
-                      secure_url: "photo_secure_url_here"
+                      id: photo_id_here
+                      secure_url: photo_secure_url_here
         "401":
           description: Unauthorized (User is not authenticated)
           content:
@@ -417,8 +483,7 @@ paths:
                     type: string
                 example:
                   success: false
-                  error: "Login first to access this page"
-
+                  error: Login first to access this page
   /password/update:
     post:
       tags:
@@ -476,16 +541,15 @@ paths:
                 example:
                   success: true
                   user:
-                    _id: "user_id_here"
+                    _id: user_id_here
                     name: John Doe
                     email: johndoe@example.com
                     role: user
                     photo:
-                      id: "photo_id_here"
-                      secure_url: "photo_secure_url_here"
+                      id: photo_id_here
+                      secure_url: photo_secure_url_here
         "400":
           $ref: "#/components/schemas/Error"
-
   /userdashboard/update:
     post:
       tags:
@@ -525,10 +589,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"  # Reference to Error schema
-
+                $ref: "#/components/schemas/Error"
   /admin/users:
     get:
+      "401":
+        description: Unauthorized (User is not authenticated)
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+      "403":
+        description: Forbidden (User does not have admin role or not authenticated)
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
       tags:
         - admin
       summary: Get All Users (Admin)
@@ -556,58 +631,9 @@ paths:
                   users:
                     type: array
                     items:
-                      $ref: "#/components/schemas/User"  # Reference to User schema
-      "401":
-        description: Unauthorized (User is not authenticated)
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Error"  # Reference to Error schema
-      "403":
-        description: Forbidden (User does not have admin role or not authenticated)
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Error"  # Reference to Error schema
-
-  /admin/user/{id}:
+                      $ref: "#/components/schemas/User"
+  "/admin/user/{id}":
     get:
-      tags:
-        - admin
-      summary: Get User by ID (Admin)
-      description: Get user details by their ID (Admin access required)
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: ID of the user to retrieve
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Success (User details retrieved)
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    default: true
-                  user:
-                    $ref: "#/components/schemas/User" # Reference to User schema
-              example:
-                success: true
-                user:
-                  _id: "user_id_here"
-                  name: John Doe
-                  email: johndoe@example.com
-                  role: user
-                  photo:
-                    id: "photo_id_here"
-                    secure_url: "photo_secure_url_here"
       "400":
         description: Bad Request (User not found)
         content:
@@ -638,7 +664,42 @@ paths:
             example:
               success: false
               error: You are not allowed to access this resource
-
+      tags:
+        - admin
+      summary: Get User by ID (Admin)
+      description: Get user details by their ID (Admin access required)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the user to retrieve
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success (User details retrieved)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  user:
+                    $ref: "#/components/schemas/User"
+              example:
+                success: true
+                user:
+                  _id: user_id_here
+                  name: John Doe
+                  email: johndoe@example.com
+                  role: user
+                  photo:
+                    id: photo_id_here
+                    secure_url: photo_secure_url_here
     put:
       tags:
         - admin
@@ -697,7 +758,7 @@ paths:
                     type: string
               example:
                 success: false
-                error: Email, Role and Name must be there
+                error: "Email, Role and Name must be there"
         "403":
           description: Forbidden (Insufficient privileges)
           content:
@@ -713,7 +774,6 @@ paths:
               example:
                 success: false
                 error: You are not allowed to access this resource
-
     delete:
       tags:
         - admin
@@ -771,3 +831,376 @@ paths:
               example:
                 success: false
                 error: You are not allowed to access this resource
+  /products:
+    get:
+      tags:
+        - Products
+      summary: Get filtered and paginated list of products
+      description: Retrieve a list of products with filtering and pagination options
+      parameters:
+        - name: search
+          in: query
+          description: Search keyword for product name
+          schema:
+            type: string
+        - name: "price[gte]"
+          in: query
+          description: Minimum price filter
+          schema:
+            type: number
+        - name: "price[lte]"
+          in: query
+          description: Maximum price filter
+          schema:
+            type: number
+        - name: category
+          in: query
+          description: Product category filter
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number for pagination
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          description: Number of items per page
+          schema:
+            type: integer
+            minimum: 1
+            default: 6
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  products:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Product"
+                  filteredProductNumber:
+                    type: integer
+                  totalProductCount:
+                    type: integer
+        "500":
+          description: Internal server error
+  "/product/{id}":
+    get:
+      tags:
+        - Products
+      summary: Get a single product by ID
+      description: Retrieve a single product based on its ID
+      parameters:
+        - name: id
+          in: path
+          description: Product ID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  product:
+                    $ref: "#/components/schemas/Product"
+        "401":
+          description: Unauthorized - Product not found
+        "500":
+          description: Internal server error
+  /review:
+    put:
+      tags:
+        - Reviews
+      summary: Add or update a review for a product
+      description: >-
+        Add or update a review for a product by providing rating, comment, and
+        product ID
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rating:
+                  type: number
+                  minimum: 1
+                  maximum: 5
+                comment:
+                  type: string
+                productId:
+                  type: string
+              required:
+                - rating
+                - comment
+                - productId
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        "500":
+          description: Internal server error
+  "/review/{productId}":
+    delete:
+      tags:
+        - Reviews
+      summary: Delete user's review for a product
+      description: Delete a review written by the authenticated user for a specific product
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: productId
+          in: path
+          description: ID of the product for which the review needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        "401":
+          description: Unauthorized - User not logged in
+        "500":
+          description: Internal server error
+  "/reviews/{productId}":
+    get:
+      tags:
+        - Reviews
+      summary: Get reviews for a specific product
+      description: Retrieve all reviews for a specific product
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: productId
+          in: path
+          description: ID of the product for which reviews need to be retrieved
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  reviews:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        user:
+                          type: string
+                          description: ID of the user who wrote the review
+                        name:
+                          type: string
+                          description: Name of the user who wrote the review
+                        rating:
+                          type: number
+                          description: Rating given in the review
+                        comment:
+                          type: string
+                          description: Comment provided in the review
+        "401":
+          description: Unauthorized - User not logged in
+        "500":
+          description: Internal server error
+  /admin/product/add:
+    post:
+      tags:
+        - Products
+        - admin
+      summary: Add a new product
+      description: Add a new product with details and images
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the product
+                  required: true
+                price:
+                  type: number
+                  description: Price of the product
+                  required: true
+                description:
+                  type: string
+                  description: Description of the product
+                  required: true
+                photos:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                    description: product's images
+                  description: Array of product images
+                  required: true
+                category:
+                  type: string
+                  description: Category of the product
+                  required: true
+                manufacturerName:
+                  type: string
+                  description: Manufacturer name of the product
+                  required: true
+                stock:
+                  type: number
+                  description: Number of items in stock
+                  required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  product:
+                    $ref: "#/components/schemas/Product"
+        "400":
+          description: Bad request - Invalid input data
+        "401":
+          description: Unauthorized - User not logged in or not an admin
+        "500":
+          description: Internal server error
+
+  /admin/products:
+    get:
+      tags:
+        - admin
+        - Products
+      summary: Get all products (admin)
+      description: Retrieve a list of all products for admin users
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  products:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Product"
+        "401":
+          description: Unauthorized - User not logged in or not an admin
+        "500":
+          description: Internal server error
+  /admin/product/{id}:
+    put:
+      tags:
+        - Admin
+        - Products
+      summary: Update a product (admin)
+      description: Update details of a product by ID for admin users
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the product to update
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/ProductUpdate"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  product:
+                    $ref: "#/components/schemas/Product"
+        "401":
+          description: Unauthorized - User not logged in or not an admin
+        "404":
+          description: Product not found
+        "500":
+          description: Internal server error
+
+    delete:
+      tags:
+        - admin
+        - Products
+      summary: Delete a product (admin)
+      description: Delete a product by ID for admin users
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the product to delete
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        "401":
+          description: Unauthorized - User not logged in or not an admin
+        "404":
+          description: Product not found
+        "500":
+          description: Internal server error
