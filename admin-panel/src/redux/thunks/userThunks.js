@@ -23,7 +23,7 @@ export const fetchUserDetails = createAsyncThunk(
       const response = await api.getUserDetails(userId);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(errorParser(error.response.data));
     }
   }
 );

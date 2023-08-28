@@ -1133,7 +1133,7 @@ paths:
   /admin/product/{id}:
     put:
       tags:
-        - Admin
+        - admin
         - Products
       summary: Update a product (admin)
       description: Update details of a product by ID for admin users
