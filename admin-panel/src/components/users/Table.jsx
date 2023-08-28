@@ -16,6 +16,7 @@ const Table = ({ users, setModalProp }) => {
     isOpen: false,
     handleYes: handleConfirmDelete,
     id: "",
+    title: "user",
   });
 
   const handleDeleteUser = (id) => {
@@ -35,8 +36,6 @@ const Table = ({ users, setModalProp }) => {
     if (selectedOption) {
       usersData = usersData.filter((user) => {
         if (user._id === id) {
-          console.log(user);
-          console.log(selectedOption);
           user.role = selectedOption.value;
         }
         return user;
