@@ -13,7 +13,14 @@ const api = {
     });
     return response;
   },
-  // Add other API functions here if needed
+  getAllProducts: async (token) => {
+    const response = await instance.get("/admin/products", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  },
 };
 
 export default api;
