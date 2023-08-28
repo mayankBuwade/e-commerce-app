@@ -13,6 +13,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import { Redirect } from "./pages/Redirect";
 import Users from "./pages/Users";
+import Products from "./pages/Products";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,6 +22,7 @@ const router = createBrowserRouter(
       <Route path="admin" element={<RootLayout />}>
         <Route index element={<Home />} />
         <Route path="users" element={<Users />} />
+        <Route path="allproducts" element={<Products />} />
       </Route>
       <Route path="login" element={<Login />} />
     </Route>
