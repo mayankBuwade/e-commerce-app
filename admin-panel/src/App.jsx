@@ -14,6 +14,7 @@ import Login from "./pages/Login";
 import { Redirect } from "./pages/Redirect";
 import Users from "./pages/Users";
 import Products from "./pages/Products";
+import AddProduct from "./pages/AddProduct";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -23,6 +24,7 @@ const router = createBrowserRouter(
         <Route index element={<Home />} />
         <Route path="users" element={<Users />} />
         <Route path="allproducts" element={<Products />} />
+        <Route path="addproduct" element={<AddProduct />} />
       </Route>
       <Route path="login" element={<Login />} />
     </Route>
