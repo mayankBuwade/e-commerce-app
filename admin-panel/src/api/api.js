@@ -21,6 +21,14 @@ const api = {
     });
     return response;
   },
+  deleteSingleProduct: async (token, productId) => {
+    const response = await instance.delete(`/admin/product/${productId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  },
 };
 
 export default api;

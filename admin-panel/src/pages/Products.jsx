@@ -46,6 +46,10 @@ const Products = () => {
     dispatch(getAllProducts(token));
   }, []);
 
+  useEffect(() => {
+    setFilteredData(products);
+  }, [products]);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }

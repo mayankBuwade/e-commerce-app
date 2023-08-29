@@ -1,7 +1,14 @@
 import { useState } from "react";
 import AlertDeleteModal from "../users/AlertDeleteModal";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteSingleProduct } from "../../redux/thunks/productThunks";
 
 const ProductTable = ({ products, setModalProp }) => {
+  const dispatch = useDispatch();
+  const token = useSelector((state) => {
+    return state.user.token;
+  });
+
   const [isEditing, setIsEditing] = useState("");
   const [alertDeleteModalProps, setAlertDeleteModalProps] = useState({
     isOpen: false,
@@ -15,7 +22,7 @@ const ProductTable = ({ products, setModalProp }) => {
   };
 
   function handleConfirmDelete(id) {
-    console.log("deleting product: ", id);
+    dispatch(deleteSingleProduct({ token, id }));
   }
 
   const handleEditClick = (id) => {

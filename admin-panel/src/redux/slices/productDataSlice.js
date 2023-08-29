@@ -1,5 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllProducts } from "../thunks/productThunks.js";
+import {
+  deleteSingleProduct,
+  getAllProducts,
+} from "../thunks/productThunks.js";
 
 const initialState = {
   products: [],
@@ -24,6 +27,12 @@ const productSlice = createSlice({
       .addCase(getAllProducts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(deleteSingleProduct.fulfilled, (state, action) => {
+        const productId = action.payload.productId;
+        state.products = state.products.filter(
+          (product) => product._id !== productId
+        );
       });
   },
 });
