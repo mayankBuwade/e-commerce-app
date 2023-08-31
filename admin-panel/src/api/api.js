@@ -29,6 +29,25 @@ const api = {
     });
     return response;
   },
+  addSingleProduct: async (token, product) => {
+    const formData = new FormData();
+    for (const key in product) {
+      if (key === "photos") {
+        for (const photo of product[key]) {
+          formData.append("photos", photo);
+        }
+      } else {
+        formData.append(key, product[key]);
+      }
+    }
+    const response = await instance.post(`/admin/product/add`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response;
+  },
 };
 
 export default api;

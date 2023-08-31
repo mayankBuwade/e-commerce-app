@@ -8,7 +8,6 @@ const mailHelper = require("../utils/emailHelper");
 const crypto = require("crypto");
 
 exports.signup = BigPromise(async (req, res, next) => {
-  console.log(req);
   const { name, email, password } = req.body;
   const options = {
     min: 8, // Minimum length

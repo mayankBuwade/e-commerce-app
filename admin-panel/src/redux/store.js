@@ -15,25 +15,27 @@ import {
   REGISTER,
 } from "redux-persist";
 
-const rootPersistConfig = {
-  key: "root",
+const userPersistConfig = {
+  key: "user",
   storage,
 };
 
 const productPersistConfig = {
   key: "products",
   storage: storageSession,
+  whitlist: ["products"],
+  blacklist: ["loading", "uploadingData", "error"],
 };
 
 const rootReducer = combineReducers({
-  user: userReducer,
+  user: persistReducer(userPersistConfig, userReducer),
   products: persistReducer(productPersistConfig, productReducer),
 });
 
-const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
+//const persistedReducer = persistReducer(rootReducer);
 
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
