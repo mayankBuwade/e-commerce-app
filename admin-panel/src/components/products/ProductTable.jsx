@@ -45,42 +45,47 @@ const ProductTable = ({ products, setModalProp }) => {
           </tr>
         </thead>
         <tbody>
-          {products.map((product) => (
-            <tr key={product._id} className="h-10 bg-yellow-50 border-b-2 ">
-              <td className="pl-6">{product._id}</td>
-              <td>{product.name}</td>
-              <td>{product.price}</td>
-              <td>{product.stock}</td>
-              <td>{product.manufacturerName}</td>
-              <td className="flex justify-around items-center ">
-                <button onClick={() => setModalProp({ isOpen: true, product })}>
-                  <span className="material-symbols-outlined py-2">
-                    visibility
-                  </span>
-                </button>
-                <button>
-                  {isEditing === product._id ? (
-                    <span
-                      className="material-symbols-outlined text-3xl font-semibold"
-                      onClick={() => handleSubmitClick(product._id)}
+          {products?.map(
+            (product) =>
+              product && (
+                <tr key={product._id} className="h-10 bg-yellow-50 border-b-2 ">
+                  <td className="pl-6">{product._id}</td>
+                  <td>{product.name}</td>
+                  <td>{product.price}</td>
+                  <td>{product.stock}</td>
+                  <td>{product.manufacturerName}</td>
+                  <td className="flex justify-around items-center ">
+                    <button
+                      onClick={() => setModalProp({ isOpen: true, product })}
                     >
-                      done
-                    </span>
-                  ) : (
-                    <span
-                      className="material-symbols-outlined"
-                      onClick={() => handleEditClick(product._id)}
-                    >
-                      edit
-                    </span>
-                  )}
-                </button>
-                <button onClick={() => handleDeleteUser(product._id)}>
-                  <span className="material-symbols-outlined">delete</span>
-                </button>
-              </td>
-            </tr>
-          ))}
+                      <span className="material-symbols-outlined py-2">
+                        visibility
+                      </span>
+                    </button>
+                    <button>
+                      {isEditing === product._id ? (
+                        <span
+                          className="material-symbols-outlined text-3xl font-semibold"
+                          onClick={() => handleSubmitClick(product._id)}
+                        >
+                          done
+                        </span>
+                      ) : (
+                        <span
+                          className="material-symbols-outlined"
+                          onClick={() => handleEditClick(product._id)}
+                        >
+                          edit
+                        </span>
+                      )}
+                    </button>
+                    <button onClick={() => handleDeleteUser(product._id)}>
+                      <span className="material-symbols-outlined">delete</span>
+                    </button>
+                  </td>
+                </tr>
+              )
+          )}
         </tbody>
       </table>
       <AlertDeleteModal
