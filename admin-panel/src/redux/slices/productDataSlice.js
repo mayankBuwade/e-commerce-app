@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  addSingleProduct,
   deleteSingleProduct,
   getAllProducts,
 } from "../thunks/productThunks.js";
@@ -7,13 +8,14 @@ import {
 const initialState = {
   products: [],
   loading: false,
+  uploadingData: false,
   error: null,
 };
 
 const productSlice = createSlice({
   name: "products",
   initialState,
-  reducer: {},
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getAllProducts.pending, (state) => {
@@ -33,6 +35,18 @@ const productSlice = createSlice({
         state.products = state.products.filter(
           (product) => product._id !== productId
         );
+      })
+      .addCase(addSingleProduct.pending, (state) => {
+        state.uploadingData = true;
+        state.error = null;
+      })
+      .addCase(addSingleProduct.fulfilled, (state, action) => {
+        state.uploadingData = !state.uploadingData;
+        state.products = [...state.products, action.payload];
+      })
+      .addCase(addSingleProduct.rejected, (state, action) => {
+        state.uploadingData = !state.uploadingData;
+        state.error = action.payload;
       });
   },
 });

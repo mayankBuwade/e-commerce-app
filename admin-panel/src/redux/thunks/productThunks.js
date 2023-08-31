@@ -8,6 +8,7 @@ export const getAllProducts = createAsyncThunk(
   async (token, { rejectWithValue }) => {
     try {
       const response = await api.getAllProducts(token);
+      console.log(response);
       return response.data.products;
     } catch (error) {
       return rejectWithValue(errorParser(error.response.data));
@@ -22,6 +23,19 @@ export const deleteSingleProduct = createAsyncThunk(
       const response = await api.deleteSingleProduct(token, id);
       const data = { data: response.data, productId: id };
       return data;
+    } catch (error) {
+      return rejectWithValue(errorParser(error.response.data));
+    }
+  }
+);
+
+export const addSingleProduct = createAsyncThunk(
+  "products/addSingleProduct",
+  async ({ token, product }, { rejectWithValue }) => {
+    try {
+      const response = await api.addSingleProduct(token, product);
+      console.log(response);
+      return response.data.product;
     } catch (error) {
       return rejectWithValue(errorParser(error.response.data));
     }

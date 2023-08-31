@@ -64,7 +64,6 @@ exports.addPorduct = BigPromise(async (req, res, next) => {
         folder: "products",
       }
     );
-    console.log("printng result", result);
     imageArray.push({
       id: result.public_id,
       secure_url: result.secure_url,
@@ -138,7 +137,6 @@ exports.adminUpdateOneProduct = BigPromise(async (req, res, next) => {
 
 exports.adminDeleteSingleProduct = BigPromise(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
-  console.log(product);
 
   if (!product) {
     return next(new CustomError("No product found with this id", 401));
@@ -150,8 +148,6 @@ exports.adminDeleteSingleProduct = BigPromise(async (req, res, next) => {
   }
 
   let response = await Product.deleteOne({ _id: product._id });
-
-  console.log(response);
 
   res.status(200).json({
     success: true,
