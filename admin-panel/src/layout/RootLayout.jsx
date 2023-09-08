@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, Navigate, Outlet } from "react-router-dom";
+import { Link, NavLink, Navigate, Outlet } from "react-router-dom";
 import { clearUser } from "../redux/slices/userDataSlice";
 
 const RootLayout = () => {
@@ -32,9 +32,9 @@ const RootLayout = () => {
               <span className="material-symbols-outlined ml-auto">person</span>
             </button>
             <div className="hidden group-hover:flex hover:flex w-[200px] flex-col bg-white drop-shadow-lg z-50 relative top-2 text-black p-2 rounded-md">
-              <a className="px-5 py-3 hover:bg-gray-200" href="#">
+              <Link className="px-5 py-3 hover:bg-gray-200" to="userprofile">
                 Profile
-              </a>
+              </Link>
               <a
                 className="px-5 py-3 hover:bg-gray-200"
                 href="#"

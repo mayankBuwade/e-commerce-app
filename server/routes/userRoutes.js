@@ -25,7 +25,7 @@ router.route("/password/reset/:token").post(passwordReset);
 //secured user routes
 router.route("/userdashboard").get(isLoggedIn, getLoggedInUserDetails);
 router.route("/password/update").post(isLoggedIn, changePassword);
-router.route("/userdashboard/update").post(isLoggedIn, updateUserDetails);
+router.route("/userdashboard/update").put(isLoggedIn, updateUserDetails);
 
 //secured admin routes
 router

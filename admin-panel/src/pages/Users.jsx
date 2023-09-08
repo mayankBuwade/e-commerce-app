@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import Table from "../components/users/Table";
-import { users } from "../fakeData";
 import Modal from "../components/users/Modal";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllUsers } from "../redux/thunks/usersThunks";
 
 const Users = () => {
+  const dispatch = useDispatch();
+  const users = useSelector((state) => state.users.users);
+  const token = useSelector((state) => state.user.token);
   const [searchQ, setSearchQ] = useState("");
   const [filteredData, setFilteredData] = useState(users);
   const [modalProp, setModalProp] = useState({ isOpen: false, user: {} });
@@ -24,6 +28,14 @@ const Users = () => {
       setFilteredData(users);
     }
   }, [searchQ]);
+
+  useEffect(() => {
+    dispatch(getAllUsers(token));
+  }, []);
+
+  useEffect(() => {
+    setFilteredData(users);
+  }, [users]);
 
   return (
     <div className="flex flex-col w-full items-center">

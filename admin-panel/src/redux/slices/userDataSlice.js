@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginUser, fetchUserDetails } from "../thunks/userThunks.js";
+import {
+  loginUser,
+  fetchUserDetails,
+  updateSelfDetails,
+} from "../thunks/userThunks.js";
 
 const initialState = {
   currentUser: {},
@@ -45,6 +49,19 @@ const userSlice = createSlice({
       .addCase(fetchUserDetails.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(updateSelfDetails.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateSelfDetails.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentUser = action.payload.user;
+        state.error = null;
+      })
+      .addCase(updateSelfDetails.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });

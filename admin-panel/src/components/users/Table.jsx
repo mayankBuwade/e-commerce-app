@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "react-select";
 import dateFormatter from "../../utils/dateFormatter";
 import { users as usersData } from "../../fakeData";
 import AlertDeleteModal from "./AlertDeleteModal";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteSingleUser } from "../../redux/thunks/usersThunks";
 
 const options = [
   { value: "user", label: "user" },
@@ -10,6 +12,8 @@ const options = [
 ];
 
 const Table = ({ users, setModalProp }) => {
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.user.token);
   const [isEditing, setIsEditing] = useState("");
   const [selectedOption, setSelectedOption] = useState(null);
   const [alertDeleteModalProps, setAlertDeleteModalProps] = useState({
@@ -24,7 +28,7 @@ const Table = ({ users, setModalProp }) => {
   };
 
   function handleConfirmDelete(id) {
-    console.log("deleting user: ", id);
+    dispatch(deleteSingleUser({ token, id }));
   }
 
   const handleEditClick = (id) => {

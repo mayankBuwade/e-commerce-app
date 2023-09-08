@@ -551,7 +551,7 @@ paths:
         "400":
           $ref: "#/components/schemas/Error"
   /userdashboard/update:
-    post:
+    put:
       tags:
         - user
         - loggedIn

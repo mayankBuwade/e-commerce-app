@@ -78,7 +78,7 @@ const AddProduct = () => {
           <label className="text-xl mb-1">Description of the product:</label>
           <textarea
             name="description"
-            className="w-full h-8 border rounded border-black min-h-[150px] pl-2"
+            className="w-full h-8 border rounded border-black min-h-[150px] pl-2 py-2"
             value={formData.description}
             onChange={handleInputChange}
             required

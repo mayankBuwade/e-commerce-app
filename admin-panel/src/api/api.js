@@ -2,7 +2,6 @@ import axios from "axios";
 
 const instance = axios.create({
   baseURL: "http://localhost:4000/api/v1", // Set your API base URL
-  timeout: 5000, // Set a timeout
 });
 
 const api = {
@@ -41,6 +40,43 @@ const api = {
       }
     }
     const response = await instance.post(`/admin/product/add`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response;
+  },
+  getUserDetails: async (token, id) => {
+    const response = await instance.get(`/admin/user/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  },
+  getAllUsers: async (token) => {
+    const response = await instance.get(`/admin/users`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  },
+  deleteSingleUser: async (token, userId) => {
+    const response = await instance.delete(`/admin/user/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  },
+  updateSelfDetails: async (token, userDetails) => {
+    const formData = new FormData();
+    for (const key in userDetails) {
+      formData.append(key, userDetails[key]);
+    }
+    const response = await instance.put(`/userdashboard/update`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data",

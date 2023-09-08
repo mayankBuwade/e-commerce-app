@@ -196,9 +196,10 @@ exports.updateUserDetails = BigPromise(async (req, res, next) => {
   const newData = {
     name: req.body.name,
     email: req.body.email,
+    role: req.body.role,
   };
 
-  if (req.file && req.file.photo !== "") {
+  if (req.files && req.files.photo !== "") {
     const user = await User.findById(req.user.id);
     const imageId = user.photo.id;
 
@@ -231,6 +232,7 @@ exports.updateUserDetails = BigPromise(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
+    user,
   });
 });
 
@@ -273,9 +275,9 @@ exports.adminUpdateOneUserDetails = BigPromise(async (req, res, next) => {
     runValidators: true,
     useFindAndModify: false,
   });
-
   res.status(200).json({
     success: true,
+    user,
   });
 });
 

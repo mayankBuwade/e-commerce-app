@@ -18,11 +18,25 @@ export const loginUser = createAsyncThunk(
 // Thunk for fetching user details
 export const fetchUserDetails = createAsyncThunk(
   "user/fetchDetails",
-  async (userId, { rejectWithValue }) => {
+  async ({ token, id }, { rejectWithValue }) => {
     try {
-      const response = await api.getUserDetails(userId);
+      const response = await api.getUserDetails(token, id);
       return response.data;
     } catch (error) {
+      return rejectWithValue(errorParser(error.response.data));
+    }
+  }
+);
+
+// Thunk for updating self details
+export const updateSelfDetails = createAsyncThunk(
+  "user/updateSelfDetails",
+  async ({ token, userDetails }, { rejectWithValue }) => {
+    try {
+      const response = await api.updateSelfDetails(token, userDetails);
+      return response.data;
+    } catch (error) {
+      console.log(error);
       return rejectWithValue(errorParser(error.response.data));
     }
   }

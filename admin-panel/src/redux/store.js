@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import userReducer from "./slices/userDataSlice.js";
 import productReducer from "./slices/productDataSlice.js";
+import usersReducer from "./slices/usersDataSlice.js";
 import storage from "redux-persist/lib/storage";
 import storageSession from "reduxjs-toolkit-persist/lib/storage/session";
 
@@ -20,19 +21,21 @@ const userPersistConfig = {
   storage,
 };
 
+const usersPersistConfig = {
+  key: "users",
+  storage: storageSession,
+};
+
 const productPersistConfig = {
   key: "products",
   storage: storageSession,
-  whitlist: ["products"],
-  blacklist: ["loading", "uploadingData", "error"],
 };
 
 const rootReducer = combineReducers({
   user: persistReducer(userPersistConfig, userReducer),
   products: persistReducer(productPersistConfig, productReducer),
+  users: persistReducer(usersPersistConfig, usersReducer),
 });
-
-//const persistedReducer = persistReducer(rootReducer);
 
 export const store = configureStore({
   reducer: rootReducer,
